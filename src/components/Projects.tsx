@@ -53,7 +53,7 @@ function VideoThumbnail({ src, isHovered, className = "" }: VideoThumbnailProps)
   );
 }
 
-const filterCategories = ["All", "Websites", "News Letter", "Logos", "Brochures", "Banners & Posters", "Product Design", "Video"];
+const filterCategories = ["All", "Websites", "Logos", "Brochures", "Banners & Posters", "Product Design", "News Letter", "Video"];
 
 export function Projects() {
   const [activeFilter, setActiveFilter] = useState("All");
@@ -81,7 +81,7 @@ export function Projects() {
             transition={{ duration: 0.3, delay: fi * 0.04 }}
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.96 }}
-            className={`shimmer-card rounded-full px-5 py-2 text-sm font-semibold transition-all duration-200 ${
+            className={`shimmer-card rounded-full px-5 py-2 text-sm font-semibold whitespace-nowrap flex-shrink-0 transition-all duration-200 ${
               activeFilter === filter
                 ? "bg-violet-600 dark:bg-violet-500 text-white shadow-md shadow-violet-500/25"
                 : "bg-zinc-100 dark:bg-[#0d0a16] text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800 hover:text-violet-600 dark:hover:text-violet-400 border border-transparent hover:border-violet-200/50 dark:hover:border-violet-500/20"

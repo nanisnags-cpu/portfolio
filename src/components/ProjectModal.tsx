@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { X, ExternalLink, ChevronLeft, ChevronRight, FileText, Check, Copy, Sparkles, Award, Gift, Clock, ShieldCheck, Mail, BookOpen } from "lucide-react";
+import { X, ExternalLink, ChevronLeft, ChevronRight, FileText, Check, Copy, Sparkles, Award, Gift, Clock, ShieldCheck, Mail, BookOpen, LayoutGrid } from "lucide-react";
 
 export interface ProjectModalProps {
   project: {
@@ -23,6 +23,9 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
   const imageRef = useRef<HTMLImageElement>(null);
   const [scrollY, setScrollY] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [viewMode, setViewMode] = useState<"grid" | "detail">(() => {
+    return project.gallery && project.gallery.length > 0 ? "grid" : "detail";
+  });
 
   // Newsletter interactive states
   const [claimedOffer, setClaimedOffer] = useState<string | null>(null);
@@ -63,6 +66,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
   const activeMediaSrc = hasGallery && project.gallery ? project.gallery[currentImageIndex] : project.image;
 
   const handleMouseMove = (e: React.MouseEvent) => {
+    if (window.innerWidth < 768) return;
     if (!containerRef.current || !imageRef.current) return;
     
     const container = containerRef.current;
@@ -87,6 +91,15 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    const originalStyle = window.getComputedStyle(document.body).overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = originalStyle;
+    };
+  }, []);
 
   const handlePrev = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -156,7 +169,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
           {/* Newsletter Banner */}
           <div className="relative aspect-[21/9] w-full overflow-hidden border-b border-zinc-900">
             <img 
-              src="/Banners & Posters/SCOM Specialist Training – Advanced Designs (1).png" 
+              src="./Banners & Posters/SCOM Specialist Training – Advanced Designs (1).png" 
               alt="SCOM Specialist Banner" 
               className="w-full h-full object-cover"
             />
@@ -359,7 +372,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
           {/* Newsletter Banner */}
           <div className="relative aspect-[21/9] w-full overflow-hidden border-b border-[#2C2720]">
             <img 
-              src="/Banners & Posters/Taxonomy June banners Dropshipping Journey in the UAE (1).png" 
+              src="./Banners & Posters/Taxonomy June banners Dropshipping Journey in the UAE (1).png" 
               alt="Taxonomy Banner" 
               className="w-full h-full object-cover"
             />
@@ -562,7 +575,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
           {/* Newsletter Banner */}
           <div className="relative aspect-[21/9] w-full overflow-hidden border-b border-[#1E293B]">
             <img 
-              src="/projects/topqore.webp" 
+              src="./projects/topqore.webp" 
               alt="TopQore Banner" 
               className="w-full h-full object-cover"
             />
@@ -760,7 +773,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
         {/* Newsletter Banner */}
         <div className="relative aspect-[21/9] w-full overflow-hidden border-b border-[#E6DEC9]">
           <img 
-            src="/Product design/Home of nature Designs (1).png" 
+            src="./Product design/Home of nature Designs (1).png" 
             alt="Home of Nature Banner" 
             className="w-full h-full object-cover"
           />
@@ -963,15 +976,59 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 20 }}
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-6xl h-full max-h-[85vh] bg-white dark:bg-zinc-950 rounded-3xl border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-2xl flex flex-col md:grid md:grid-cols-3"
+        className={`relative w-full max-w-6xl h-full max-h-[85vh] bg-white dark:bg-zinc-950 rounded-3xl border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-2xl flex ${viewMode === 'grid' ? 'flex-col' : 'flex-col md:grid md:grid-cols-3'}`}
       >
-        {/* Close Button (Floating on Mobile) */}
-        <button 
-          onClick={onClose} 
-          className="absolute top-4 right-4 z-50 p-2.5 bg-white/80 hover:bg-zinc-100 dark:bg-black/60 dark:hover:bg-zinc-800/80 border border-zinc-200/50 dark:border-white/5 rounded-full text-zinc-800 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-all shadow-md md:hidden"
-        >
-          <X size={20} />
-        </button>
+        {viewMode === "grid" && hasGallery ? (
+          <div className="w-full h-full overflow-y-auto p-6 md:p-10">
+            <div className="flex justify-between items-center mb-8 sticky top-0 bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md py-4 z-10 border-b border-zinc-200 dark:border-zinc-800">
+              <div>
+                <h2 className="text-2xl md:text-3xl font-bold text-zinc-900 dark:text-white">{project.title}</h2>
+                <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">Select a banner to view details</p>
+              </div>
+              <button 
+                onClick={onClose} 
+                className="p-3 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 rounded-full text-zinc-600 dark:text-zinc-300 transition-all shadow-sm"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 pb-10">
+              {project.gallery!.map((img, idx) => (
+                <motion.div 
+                  key={idx}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: idx * 0.03, duration: 0.3 }}
+                  onClick={() => {
+                    setCurrentImageIndex(idx);
+                    setViewMode("detail");
+                  }}
+                  className="aspect-square bg-zinc-100 dark:bg-zinc-900 rounded-2xl overflow-hidden cursor-pointer group border border-zinc-200/50 dark:border-zinc-800/50 hover:border-violet-500/50 transition-all shadow-sm hover:shadow-xl hover:shadow-violet-500/20 flex items-center justify-center"
+                >
+                  <img src={img} alt={`Gallery ${idx}`} loading="lazy" className="w-full h-full object-contain p-2 group-hover:scale-105 transition-transform duration-500" />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <>
+            {/* Back Button (Floating on Mobile) */}
+            {hasGallery && (
+              <button 
+                onClick={() => setViewMode("grid")} 
+                className="absolute top-4 left-4 z-50 p-2.5 bg-white/80 hover:bg-zinc-100 dark:bg-black/60 dark:hover:bg-zinc-800/80 border border-zinc-200/50 dark:border-white/5 rounded-full text-zinc-800 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-all shadow-md md:hidden"
+              >
+                <LayoutGrid size={20} />
+              </button>
+            )}
+
+            {/* Close Button (Floating on Mobile) */}
+            <button 
+              onClick={onClose} 
+              className="absolute top-4 right-4 z-50 p-2.5 bg-white/80 hover:bg-zinc-100 dark:bg-black/60 dark:hover:bg-zinc-800/80 border border-zinc-200/50 dark:border-white/5 rounded-full text-zinc-800 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white transition-all shadow-md md:hidden"
+            >
+              <X size={20} />
+            </button>
 
         {/* Media Left Area (2/3 width on Desktop) */}
         <div className="relative md:col-span-2 h-[45vh] md:h-full bg-zinc-50/50 dark:bg-zinc-900/40 flex items-center justify-center overflow-hidden border-b md:border-b-0 md:border-r border-zinc-200 dark:border-zinc-800">
@@ -1012,7 +1069,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
               onMouseMove={project.tags.includes("Websites") && !hasGallery ? handleMouseMove : undefined}
               className={`relative w-full h-full ${
                 project.tags.includes("Websites") && !hasGallery 
-                  ? "cursor-ns-resize overflow-hidden" 
+                  ? "md:cursor-ns-resize overflow-y-auto md:overflow-hidden custom-scrollbar" 
                   : "flex items-center justify-center p-6 md:p-10 select-none"
               }`}
             >
@@ -1025,7 +1082,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
                   initial={{ opacity: 0 }}
                   className={
                     project.tags.includes("Websites") && !hasGallery
-                      ? "w-full h-auto object-cover absolute top-0 left-0 shadow-lg"
+                      ? "w-full h-auto object-cover md:absolute md:top-0 md:left-0 shadow-lg"
                       : "max-w-full max-h-full object-contain rounded-xl shadow-xl border border-zinc-200 dark:border-zinc-800/30"
                   }
                   animate={
@@ -1043,7 +1100,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
 
               {/* Website Panning Guide Overlay */}
               {project.tags.includes("Websites") && !hasGallery && (
-                <div className="absolute inset-x-0 bottom-6 flex justify-center pointer-events-none transition-opacity duration-500 hover:opacity-0">
+                <div className="hidden md:flex absolute inset-x-0 bottom-6 justify-center pointer-events-none transition-opacity duration-500 hover:opacity-0">
                   <span className="bg-black/75 backdrop-blur-md text-white/95 px-4 py-2 rounded-full text-xs flex items-center gap-2 border border-white/5 shadow-lg">
                     <span className="animate-bounce">↕</span> Move mouse to scroll website view
                   </span>
@@ -1099,10 +1156,18 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
         <div className="md:col-span-1 h-[40vh] md:h-full flex flex-col justify-between bg-zinc-50/30 dark:bg-zinc-950 p-6 md:p-8 overflow-y-auto">
           {/* Top Info */}
           <div className="space-y-6">
-            <div className="hidden md:flex justify-end">
+            <div className="hidden md:flex justify-between items-center">
+              {hasGallery ? (
+                <button 
+                  onClick={() => setViewMode("grid")} 
+                  className="flex items-center gap-2 px-3 py-1.5 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 rounded-lg text-xs font-semibold text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-all border border-zinc-200 dark:border-zinc-800 shadow-sm"
+                >
+                  <LayoutGrid size={14} /> View All Banners
+                </button>
+              ) : <div />}
               <button 
                 onClick={onClose} 
-                className="p-2 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 rounded-full text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-all border border-zinc-200 dark:border-zinc-800"
+                className="p-2 bg-zinc-100 hover:bg-zinc-200 dark:bg-zinc-900 dark:hover:bg-zinc-800 rounded-full text-zinc-500 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white transition-all border border-zinc-200 dark:border-zinc-800 shadow-sm"
               >
                 <X size={18} />
               </button>
@@ -1183,6 +1248,8 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
             </div>
           )}
         </div>
+          </>
+        )}
       </motion.div>
     </motion.div>
   );

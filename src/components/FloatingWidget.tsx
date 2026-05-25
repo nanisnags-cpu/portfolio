@@ -100,9 +100,11 @@ export function FloatingWidget() {
       </a>
 
       {/* Resume/PDF Button */}
-      {/* We use a placeholder link if there's no main resume, or link to contact */}
       <a
-        href="#" // Replace with resume link if needed
+        href="./N_Nagesh_Senior_Designer_Resume.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        download="N_Nagesh_Senior_Designer_Resume.pdf"
         className="pointer-events-auto flex items-center justify-center w-12 h-12 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md rounded-full shadow-lg shadow-black/10 border border-zinc-200/50 dark:border-white/10 text-zinc-700 dark:text-zinc-300 hover:text-violet-600 dark:hover:text-violet-400 hover:scale-110 active:scale-95 transition-all duration-300 group relative"
         aria-label="Resume"
       >

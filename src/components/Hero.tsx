@@ -1,12 +1,12 @@
 import { siteData } from "../data";
 import { motion } from "motion/react";
-import { ArrowRight, ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown, Download } from "lucide-react";
 
 export function Hero() {
   return (
     <section
       className="relative flex min-h-[80vh] lg:min-h-[85vh] items-center overflow-hidden pt-20 md:pt-24 bg-[#040209] bg-cover bg-center md:bg-[length:auto_100%] md:bg-right-bottom bg-no-repeat"
-      style={{ backgroundImage: "url('/Hero section image.png')" }}
+      style={{ backgroundImage: "url('./Hero section image.png')" }}
     >
       {/* Dark overlay – fades to transparent on the right */}
       <div className="absolute inset-0 bg-black/60 md:bg-transparent md:bg-gradient-to-r md:from-black/90 md:via-black/45 md:to-transparent z-0 pointer-events-none" />
@@ -76,6 +76,16 @@ export function Hero() {
               className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-white/20 bg-white/5 hover:bg-white/10 hover:border-white/30 px-8 text-sm font-medium text-white transition-all duration-300 hover:scale-105 active:scale-95 backdrop-blur-sm"
             >
               Contact Me
+            </a>
+            <a
+              href="./N_Nagesh_Senior_Designer_Resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              download="N_Nagesh_Senior_Designer_Resume.pdf"
+              className="group inline-flex h-12 items-center justify-center gap-2 rounded-full border border-white/20 bg-white/5 hover:bg-violet-600 hover:border-violet-500 px-8 text-sm font-medium text-white transition-all duration-300 hover:scale-105 active:scale-95 backdrop-blur-sm"
+            >
+              <Download size={16} className="transition-transform group-hover:-translate-y-0.5 group-hover:scale-110" />
+              Resume
             </a>
           </motion.div>
 
