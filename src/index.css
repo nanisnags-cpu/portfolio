@@ -1,0 +1,317 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Inter", "SF Pro Text", -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+   PATTERN / TEXTURE
+   ============================================================ */
+.pattern-dots {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* ============================================================
+   MARQUEE
+   ============================================================ */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+.animate-marquee-reverse {
+  animation: marquee 40s linear infinite reverse;
+}
+.marquee-container:hover .animate-marquee,
+.marquee-container:hover .animate-marquee-reverse {
+  animation-play-state: paused;
+}
+
+/* ============================================================
+   SCROLL INDICATOR BOUNCE
+   ============================================================ */
+@keyframes bounce-slow {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(8px); opacity: 0.5; }
+}
+.animate-bounce-slow {
+  animation: bounce-slow 2s ease-in-out infinite;
+}
+
+/* ============================================================
+   SHIMMER SWEEP (card hover shine)
+   ============================================================ */
+@keyframes shimmer-sweep {
+  0%   { left: -100%; }
+  100% { left: 200%; }
+}
+.shimmer-card {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.06) 50%,
+    transparent 80%
+  );
+  pointer-events: none;
+  transition: none;
+}
+.shimmer-card:hover::after {
+  animation: shimmer-sweep 0.65s ease-in-out;
+}
+
+/* ============================================================
+   GLOW RING (violet focus/hover glow)
+   ============================================================ */
+.glow-violet {
+  box-shadow: 0 0 0 0 rgba(139, 92, 246, 0);
+  transition: box-shadow 0.3s ease;
+}
+.glow-violet:hover,
+.glow-violet:focus {
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25), 0 8px 30px rgba(139, 92, 246, 0.15);
+}
+
+/* ============================================================
+   INPUT FOCUS GLOW
+   ============================================================ */
+.input-glow {
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.input-glow:focus {
+  outline: none;
+  border-color: rgba(139, 92, 246, 0.6) !important;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+}
+
+/* ============================================================
+   FLOAT ANIMATION
+   ============================================================ */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* ============================================================
+   GRADIENT TEXT ANIMATION
+   ============================================================ */
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.animate-gradient-text {
+  background-size: 200% 200%;
+  animation: gradient-shift 4s ease infinite;
+}
+
+/* ============================================================
+   SKILL ITEM HOVER SLIDE
+   ============================================================ */
+.skill-item {
+  transition: transform 0.25s ease, color 0.25s ease;
+}
+.skill-item:hover {
+  transform: translateX(6px);
+}
+
+/* ============================================================
+   LINK UNDERLINE SLIDE (nav)
+   ============================================================ */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: currentColor;
+  transition: width 0.25s ease;
+}
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* ============================================================
+   CARD INNER GLOW ON HOVER
+   ============================================================ */
+.card-glow {
+  position: relative;
+}
+.card-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.1), transparent 65%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+.card-glow:hover::before {
+  opacity: 1;
+}
+
+/* ============================================================
+   STEP CARD — NUMBER GLOW
+   ============================================================ */
+.step-number {
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+.group:hover .step-number {
+  color: rgba(139, 92, 246, 0.5);
+  text-shadow: 0 0 30px rgba(139, 92, 246, 0.3);
+}
+
+/* ============================================================
+   PROCESS CARD GRADIENT BORDER ON HOVER
+   ============================================================ */
+.process-card {
+  position: relative;
+  z-index: 0;
+}
+.process-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0), rgba(139, 92, 246, 0.5), rgba(139, 92, 246, 0));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.process-card:hover::after {
+  opacity: 1;
+}
+
+/* ============================================================
+   AURORA FLOATING ORBS
+   ============================================================ */
+@keyframes orb-drift-1 {
+  0%,  100% { transform: translate(0px,   0px)  scale(1);    }
+  25%        { transform: translate(40px, -30px) scale(1.06); }
+  50%        { transform: translate(20px,  25px) scale(0.94); }
+  75%        { transform: translate(-30px,-15px) scale(1.03); }
+}
+@keyframes orb-drift-2 {
+  0%,  100% { transform: translate(0px,   0px)  scale(1);    }
+  30%        { transform: translate(-50px, 20px) scale(1.08); }
+  60%        { transform: translate(30px, -40px) scale(0.92); }
+}
+@keyframes orb-drift-3 {
+  0%,  100% { transform: translate(0px,  0px)  scale(1);    }
+  40%        { transform: translate(25px, 35px) scale(1.05); }
+  70%        { transform: translate(-20px,-20px)scale(0.96); }
+}
+@keyframes orb-drift-4 {
+  0%,  100% { transform: translate(0px,  0px)  scale(1);    }
+  35%        { transform: translate(-35px,-25px)scale(1.07); }
+  65%        { transform: translate(20px,  30px)scale(0.93); }
+}
+
+.aurora-orb-1 { animation: orb-drift-1 12s ease-in-out infinite; }
+.aurora-orb-2 { animation: orb-drift-2 15s ease-in-out infinite; animation-delay: -4s; }
+.aurora-orb-3 { animation: orb-drift-3 11s ease-in-out infinite; animation-delay: -7s; }
+.aurora-orb-4 { animation: orb-drift-4 14s ease-in-out infinite; animation-delay: -2s; }
+.aurora-orb-5 { animation: orb-drift-1 18s ease-in-out infinite reverse; animation-delay: -9s; }
+.aurora-orb-6 { animation: orb-drift-3 13s ease-in-out infinite; animation-delay: -5s; }
+
+/* ============================================================
+   SPINNING CONIC-GRADIENT CARD BORDER
+   ============================================================ */
+@property --border-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes border-spin {
+  to { --border-angle: 360deg; }
+}
+.spin-border {
+  position: relative;
+  isolation: isolate;
+}
+.spin-border::before {
+  content: "";
+  position: absolute;
+  inset: -1.5px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--border-angle),
+    #7c3aed 0%,
+    #ec4899 20%,
+    #06b6d4 40%,
+    #10b981 55%,
+    #f59e0b 70%,
+    #7c3aed 100%
+  );
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  animation: border-spin 4s linear infinite paused;
+}
+.spin-border:hover::before {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+/* ============================================================
+   SWIRL PULSE (section background shimmer)
+   ============================================================ */
+@keyframes swirl-bg {
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
+}
+.aurora-bg {
+  background: linear-gradient(
+    135deg,
+    #0a0616 0%,
+    #140b24 15%,
+    #0d0520 30%,
+    #1a0733 45%,
+    #0b0418 60%,
+    #160825 75%,
+    #0a0616 100%
+  );
+  background-size: 400% 400%;
+  animation: swirl-bg 18s ease infinite;
+}
+
